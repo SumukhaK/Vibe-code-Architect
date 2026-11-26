@@ -1,0 +1,74 @@
+# Android setup
+
+The Android overlay adds rules and CI to a project created by Android Studio.
+Generate the app first (Empty Compose Activity, package `{{ android_package }}`),
+then run Copier into the same folder. Wire these into Gradle once:
+
+## 1. detekt (static analysis + banned APIs)
+
+`build.gradle.kts` (project):
+
+```kotlin
+plugins {
+    id("io.gitlab.arturbosch.detekt") version "1.23.7"
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
+    source.setFrom(files("app/src/main/kotlin", "app/src/main/java"))
+}
+```
+
+## 2. Konsist (architecture rules as tests)
+
+`app/build.gradle.kts`:
+
+```kotlin
+dependencies {
+    testImplementation("com.lemonappdev:konsist:0.17.3")
+    testImplementation("junit:junit:4.13.2")
+}
+```
+
+The rules live in `app/src/test/kotlin/.../architecture/ArchitectureTest.kt`.
+Keep packages `domain`, `data` and `ui` under `{{ android_package }}`.
+
+## 3. Roborazzi (screenshot tests = UI proof in CI)
+
+`app/build.gradle.kts`:
+
+```kotlin
+plugins {
+    id("io.github.takahirom.roborazzi") version "1.32.2"
+}
+
+android {
+    testOptions.unitTests.isIncludeAndroidResources = true
+}
+
+dependencies {
+    testImplementation("io.github.takahirom.roborazzi:roborazzi:1.32.2")
+    testImplementation("io.github.takahirom.roborazzi:roborazzi-compose:1.32.2")
+    testImplementation("org.robolectric:robolectric:4.13")
+    testImplementation("androidx.compose.ui:ui-test-junit4")
+}
+```
+
+A screenshot test for a composable:
+
+```kotlin
+@RunWith(AndroidJUnit4::class)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Config(sdk = [34])
+class LoginScreenScreenshotTest {
+    @Test
+    fun loginScreen() = captureRoboImage { LoginScreen(state = LoginState.Empty) }
+}
+```
+
+Record the reference images once with `./gradlew recordRoborazziDebug` and commit
+them. CI runs `verifyRoborazziDebug` and attaches the images to the run as proof.
+
+> Versions above were current when this template was written. Bump them in an
+> `upkeep/` PR; check each project's release notes first.

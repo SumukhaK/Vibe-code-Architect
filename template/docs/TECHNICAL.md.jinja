@@ -1,0 +1,41 @@
+# {{ project_name }} — Technical Design
+
+> How we build what `PRD.md` describes. Keep this the *current* picture; record the
+> reasoning behind each decision as an ADR in `docs/adr/` so this file stays short.
+
+## Architecture at a glance
+<!-- A diagram or 5–10 lines: the main parts and how they talk. -->
+
+## Stack
+| Concern | Choice | Why (ADR) |
+| --- | --- | --- |
+{%- if 'python' in stacks %}
+| Language | Python 3.12 | |
+| Lint / format | ruff | |
+| Types | pyright (strict) | |
+| Boundaries | import-linter | |
+| Tests | pytest + coverage | |
+{%- endif %}
+{%- if 'kotlin-android' in stacks %}
+| App | Kotlin + Jetpack Compose | |
+| Static analysis | detekt + Android lint | |
+| Architecture tests | Konsist | |
+| Screenshot tests | Roborazzi | |
+{%- endif %}
+
+## Module boundaries
+<!-- Which parts may depend on which. Each rule here should also exist as a check
+     (import-linter contract, Konsist test, detekt rule). A rule only written here
+     will be broken. -->
+
+## Banned patterns
+<!-- APIs or patterns agents must not use, and the check that enforces each.
+     Grows from docs/corrections.md. -->
+| Pattern | Why | Enforced by |
+| --- | --- | --- |
+
+## Verification
+<!-- How an agent runs the app and proves a change works for this project. -->
+
+## Decisions
+See `docs/adr/`. One file per decision: context, options, choice, consequences.

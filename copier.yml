@@ -1,0 +1,70 @@
+# Vibe-code-Architect — Copier template
+# Use:    copier copy --trust gh:SumukhaK/Vibe-code-Architect my-project
+# Update: copier update --trust      (pulls rule improvements into an existing project)
+
+_subdirectory: template
+_min_copier_version: "9.0.0"
+_answers_file: .copier-answers.yml
+_exclude:
+  - "__pycache__"
+  - "*.py[co]"
+  - ".pytest_cache"
+  - ".ruff_cache"
+_tasks:
+  # The code map is generated from code from the very first commit.
+  - ["{{ _copier_python }}", "tools/codemap.py"]
+_message_after_copy: |
+  Done. Next steps:
+    1. Read AGENTS.md — the rules every agent (and you) follow in this repo.
+    2. Fill in docs/PRD.md, then docs/TECHNICAL.md.
+    3. Turn the PRD into GitHub issues — they are the tracker.
+    4. Push, then protect main:  bash tools/protect_main.sh
+  Happy building.
+
+project_name:
+  type: str
+  help: Project name (human readable)
+  placeholder: My Project
+  validator: "{% if not project_name.strip() %}Required{% endif %}"
+
+project_slug:
+  type: str
+  help: Repository name
+  default: "{{ project_name | lower | replace(' ', '-') }}"
+
+description:
+  type: str
+  help: One sentence — what does it do, for whom?
+  default: ""
+
+owner:
+  type: str
+  help: Your GitHub username (the only person who merges)
+  default: SumukhaK
+
+stacks:
+  type: str
+  help: Which stack overlays? (core rules are always included)
+  multiselect: true
+  choices:
+    Python backend / library: python
+    Kotlin Android (Compose): kotlin-android
+  validator: "{% if not stacks %}Pick at least one stack{% endif %}"
+
+package_name:
+  type: str
+  help: Python package name
+  default: "{{ project_slug | replace('-', '_') }}"
+  when: "{{ 'python' in stacks }}"
+  validator: "{% if not (package_name | regex_search('^[a-z_][a-z0-9_]*$')) %}Use lowercase letters, digits and underscores{% endif %}"
+
+android_package:
+  type: str
+  help: Android application package (e.g. dev.sumukha.app)
+  default: "dev.{{ owner | lower }}.{{ project_slug | replace('-', '') }}"
+  when: "{{ 'kotlin-android' in stacks }}"
+
+android_package_path:
+  type: str
+  default: "{{ android_package | replace('.', '/') }}"
+  when: false

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" width="960" height="300" role="img" aria-label="Every correction becomes a check: first a rule, then clean up old copies, then a way to verify. Each turn of the loop leaves one less thing to review.">
+  <style>
+    .t { font-family: "Segoe UI", "Helvetica Neue", Arial, "DejaVu Sans", sans-serif; }
+    .h { font-size: 26px; font-weight: 700; fill: #1d2a4a; }
+    .s { font-size: 15px; fill: #5b6478; }
+    .n { font-size: 17px; font-weight: 700; fill: #1d2a4a; }
+    .ns { font-size: 13px; fill: #4d5669; }
+    .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+    .e { font-size: 13px; font-weight: 600; fill: #2a9d6f; }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8a93a6"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#2a9d6f"/>
+    </marker>
+  </defs>
+  <rect x="2" y="2" width="956" height="296" rx="28" fill="#fbf7ef" stroke="#eadfca" stroke-width="2"/>
+  <text class="t h" x="48" y="62">Every correction becomes a check</text>
+  <text class="t s" x="48" y="88">Not another line in AGENTS.md — a rule that can't be ignored.</text>
+
+  <rect x="48" y="124" width="180" height="84" rx="16" fill="#fde9e5" stroke="#e05a47" stroke-width="2"/>
+  <text class="t n" x="138" y="160" text-anchor="middle">Agent corrected</text>
+  <text class="t ns" x="138" y="184" text-anchor="middle">a mistake that can recur</text>
+
+  <rect x="276" y="124" width="180" height="84" rx="16" fill="#e8f0fe" stroke="#3b74ee" stroke-width="2"/>
+  <circle cx="298" cy="124" r="13" fill="#3b74ee"/><text class="t num" x="298" y="129" text-anchor="middle">1</text>
+  <text class="t n" x="366" y="160" text-anchor="middle">Add a rule</text>
+  <text class="t ns" x="366" y="184" text-anchor="middle">lint · type · test</text>
+
+  <rect x="504" y="124" width="180" height="84" rx="16" fill="#fff4dc" stroke="#f4a71d" stroke-width="2"/>
+  <circle cx="526" cy="124" r="13" fill="#f4a71d"/><text class="t num" x="526" y="129" text-anchor="middle">2</text>
+  <text class="t n" x="594" y="160" text-anchor="middle">Clean up</text>
+  <text class="t ns" x="594" y="184" text-anchor="middle">old copies get copied</text>
+
+  <rect x="732" y="124" width="180" height="84" rx="16" fill="#e7f5ee" stroke="#2a9d6f" stroke-width="2"/>
+  <circle cx="754" cy="124" r="13" fill="#2a9d6f"/><text class="t num" x="754" y="129" text-anchor="middle">3</text>
+  <text class="t n" x="822" y="160" text-anchor="middle">Make it verifiable</text>
+  <text class="t ns" x="822" y="184" text-anchor="middle">agent can prove it</text>
+
+  <path d="M232 166 H268" stroke="#8a93a6" stroke-width="2.5" marker-end="url(#a)"/>
+  <path d="M460 166 H496" stroke="#8a93a6" stroke-width="2.5" marker-end="url(#a)"/>
+  <path d="M688 166 H724" stroke="#8a93a6" stroke-width="2.5" marker-end="url(#a)"/>
+  <path d="M822 212 C822 262 138 262 138 216" stroke="#2a9d6f" stroke-width="2.5" fill="none" marker-end="url(#ag)"/>
+  <rect x="380" y="236" width="200" height="24" rx="12" fill="#fbf7ef"/>
+  <text class="t e" x="480" y="253" text-anchor="middle">one less thing to review</text>
+</svg>

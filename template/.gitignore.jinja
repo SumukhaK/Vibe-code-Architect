@@ -1,0 +1,28 @@
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+{%- if 'python' in stacks %}
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+{%- endif %}
+{%- if 'kotlin-android' in stacks %}
+
+# Android
+.gradle/
+build/
+local.properties
+captures/
+*.keystore
+*.jks
+{%- endif %}

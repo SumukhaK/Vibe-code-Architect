@@ -1,0 +1,44 @@
+name: Python
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Python checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[dev]"
+      - name: Lint and format
+        run: |
+          ruff check .
+          ruff format --check .
+      - name: Types (strict)
+        run: pyright
+      - name: Module boundaries
+        run: lint-imports
+      - name: Dead code
+        run: vulture
+      - name: Tests and coverage
+        run: pytest
+      - name: Coverage of the changed lines
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: diff-cover coverage.xml --compare-branch="origin/$BASE_REF" --fail-under=90
+      - name: Bug fix proof — the new tests fail without the fix
+        if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'bugfix/')
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: python tools/red_green.py --base "origin/$BASE_REF"

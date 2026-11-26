@@ -1,0 +1,64 @@
+# Deterministic guardrails for {{ project_name }}.
+# Read by tools/pr_guard.py and tools/codemap.py in CI.
+# This file can only change on an upkeep/ branch (it is in protected_globs).
+
+[pr]
+branch_pattern = "^(feature|bugfix|upkeep)/[a-z0-9][a-z0-9._-]*$"
+# Surgical changes: small enough that a reviewer can actually read it.
+max_changed_lines = 400
+max_changed_files = 12
+# Generated or bulky files that do not count toward the size limit.
+size_ignore_globs = [
+  "docs/CODEMAP.md",
+  "**/*.lock",
+  "**/*.png",
+  "**/*.svg",
+{%- if 'kotlin-android' in stacks %}
+  "**/src/test/snapshots/**",
+  "gradle/wrapper/**",
+{%- endif %}
+]
+# Files that define the rules. Only upkeep/ branches may change them.
+protected_globs = [
+  ".github/**",
+  "guardrails.toml",
+  "tools/**",
+  "AGENTS.md",
+{%- if 'python' in stacks %}
+  "pyproject.toml",
+{%- endif %}
+{%- if 'kotlin-android' in stacks %}
+  "config/detekt/**",
+{%- endif %}
+]
+guardrail_branch_prefix = "upkeep/"
+
+[tests]
+# A PR that changes source must also change tests (or say "No tests: <reason>").
+source_globs = [
+{%- if 'python' in stacks %}
+  "src/**",
+{%- endif %}
+{%- if 'kotlin-android' in stacks %}
+  "**/src/main/**",
+{%- endif %}
+]
+test_globs = [
+{%- if 'python' in stacks %}
+  "tests/**",
+{%- endif %}
+{%- if 'kotlin-android' in stacks %}
+  "**/src/test/**",
+  "**/src/androidTest/**",
+{%- endif %}
+]
+
+[codemap]
+roots = [
+{%- if 'python' in stacks %}
+  "src",
+{%- endif %}
+{%- if 'kotlin-android' in stacks %}
+  "app/src/main",
+{%- endif %}
+]

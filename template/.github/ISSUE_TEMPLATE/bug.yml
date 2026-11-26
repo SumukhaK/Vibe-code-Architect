@@ -1,0 +1,30 @@
+name: Bug
+description: Something behaves wrongly. Fixed test-first on a bugfix/ branch.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should happen
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: The smallest steps or command. This becomes the failing test.
+    validations:
+      required: true
+  - type: textarea
+    id: verify
+    attributes:
+      label: How to verify the fix
+      description: The test that must fail before the fix and pass after, plus any manual check.
+    validations:
+      required: true

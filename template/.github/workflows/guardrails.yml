@@ -1,0 +1,50 @@
+name: Guardrails
+
+# Deterministic checks that no reviewer should spend attention on.
+# Secret-free and read-only: safe on any pull request.
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  pr-rules:
+    name: PR rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Branch, size, tests, issue link, proof, protected files
+        env:
+          # Passed as data through the environment, never interpolated into the shell.
+          PR_BODY: ${{ github.event.pull_request.body }}
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
+        run: python tools/pr_guard.py --base "origin/$BASE_REF" --head HEAD --branch "$HEAD_REF"
+
+  codemap:
+    name: Code map is current
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python tools/codemap.py --check
+
+  duplication:
+    name: No copy-paste
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      # Agents copy what they see. Duplicated blocks become the next agent's pattern.
+      - run: npx --yes jscpd@4 --config .jscpd.json .

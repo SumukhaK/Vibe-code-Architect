@@ -1,0 +1,101 @@
+"""Prove a bug fix: the new tests must FAIL on the base branch and PASS on this one.
+
+Runs in CI on bugfix/ branches. It checks out the base branch into a temporary
+worktree, drops in only the test files this branch added or changed, and runs
+them against the old code. If they pass there, they don't prove the fix.
+
+Standard library only (plus pytest, already a dev dependency).
+"""
+
+from __future__ import annotations
+
+import argparse
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+# pytest exit codes: 1 = tests failed, 2 = collection error (e.g. the fixed symbol
+# doesn't exist yet). Both mean "fails before the fix".
+_FAILED_BEFORE = {1, 2}
+_NO_TESTS = 5
+
+
+def _git(*args: str, cwd: Path | None = None) -> str:
+    return subprocess.run(
+        ["git", *args], cwd=cwd, check=True, capture_output=True, text=True
+    ).stdout
+
+
+def changed_tests(base: str) -> list[str]:
+    names = _git("diff", "--name-only", "--diff-filter=AM", f"{base}...HEAD", "--", "tests")
+    return sorted(
+        name
+        for name in names.splitlines()
+        if Path(name).name.startswith("test_") and name.endswith(".py")
+    )
+
+
+def run_on_base(base: str, tests: list[str]) -> int:
+    root = Path.cwd()
+    with tempfile.TemporaryDirectory(prefix="red-green-") as tmp:
+        worktree = Path(tmp) / "base"
+        _git("worktree", "add", "--detach", str(worktree), base)
+        try:
+            for test in tests:
+                target = worktree / test
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(root / test, target)
+            env = {**os.environ, "PYTHONPATH": str(worktree / "src")}
+            return subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "pytest",
+                    "-q",
+                    "-p",
+                    "no:cacheprovider",
+                    "-o",
+                    "addopts=",
+                    *tests,
+                ],
+                cwd=worktree,
+                env=env,
+                capture_output=True,
+                text=True,
+                check=False,
+            ).returncode
+        finally:
+            _git("worktree", "remove", "--force", str(worktree))
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--base", required=True, help="base ref, e.g. origin/main")
+    args = parser.parse_args(argv)
+
+    tests = changed_tests(args.base)
+    if not tests:
+        print(
+            "::error::A bug fix needs a new or changed test under tests/ that reproduces the bug."
+        )
+        return 1
+
+    code = run_on_base(args.base, tests)
+    if code in _FAILED_BEFORE:
+        print(f"Proof OK: {', '.join(tests)} fail on {args.base} and pass on this branch.")
+        return 0
+    if code == _NO_TESTS:
+        print("::error::The changed test files contain no tests.")
+    else:
+        print(
+            f"::error::{', '.join(tests)} already pass on {args.base}, "
+            "so they don't prove the fix. Write a test that reproduces the bug."
+        )
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,42 @@
+# {{ project_name }}
+
+{{ description }}
+
+## How this repo is built
+
+This project follows the [Vibe-code-Architect](https://github.com/SumukhaK/Vibe-code-Architect)
+workflow: a human owner, a reviewer model and worker agents, held to rules that are
+enforced by CI rather than by hope.
+
+- **Rules for agents:** [`AGENTS.md`](AGENTS.md)
+- **What we're building:** [`docs/PRD.md`](docs/PRD.md)
+- **How, and why:** [`docs/TECHNICAL.md`](docs/TECHNICAL.md) and [`docs/adr/`](docs/adr/)
+- **What's being worked on:** GitHub Issues
+- **Map of the code:** [`docs/CODEMAP.md`](docs/CODEMAP.md) (generated)
+
+## Development
+{% if 'python' in stacks %}
+### Python
+
+```bash
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -e ".[dev]"
+ruff check . && ruff format --check .
+pyright
+lint-imports
+pytest
+```
+{% endif %}{% if 'kotlin-android' in stacks %}
+### Android
+
+```bash
+./gradlew testDebugUnitTest detekt lint
+./gradlew verifyRoborazziDebug     # screenshot tests
+```
+See [`docs/android-setup.md`](docs/android-setup.md) for the Gradle wiring.
+{% endif %}
+### Before every PR
+
+```bash
+python tools/codemap.py            # refresh the generated code map
+```

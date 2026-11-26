@@ -1,0 +1,52 @@
+name: Template CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  tools-and-generation:
+    name: Tools and generated projects
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install copier pytest
+      - run: git config --global user.email ci@example.com && git config --global user.name ci
+      - name: Tool tests + every stack combination generates correctly
+        run: pytest -q
+
+  generated-python-passes-its-own-checks:
+    name: Generated Python project passes its own checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install copier
+      - name: Generate
+        run: >
+          copier copy --trust --defaults --vcs-ref HEAD
+          --data "project_name=Demo App" --data owner=octocat
+          --data 'stacks=["python"]' . /tmp/demo
+      - name: Run the generated project's checks
+        working-directory: /tmp/demo
+        run: |
+          pip install -e ".[dev]"
+          ruff check . && ruff format --check .
+          pyright
+          lint-imports
+          vulture
+          pytest
+          python tools/codemap.py --check

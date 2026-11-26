@@ -1,0 +1,17 @@
+{
+  "threshold": 3,
+  "minTokens": 60,
+  "reporters": ["console"],
+  "ignore": [
+    "**/.git/**",
+    "**/build/**",
+    "**/.gradle/**",
+    "**/node_modules/**",
+    "**/.venv/**",
+    "docs/**",
+    "**/*.md",
+    "**/*.lock",
+    "**/src/test/snapshots/**"
+  ],
+  "gitignore": true
+}

@@ -1,0 +1,58 @@
+# detekt rules for this project — layered on top of detekt's defaults.
+# Every repeated agent mistake becomes an entry here (see docs/corrections.md).
+# This file can only change on an upkeep/ branch.
+
+build:
+  maxIssues: 0
+
+style:
+  # Banned APIs. The "reason" is what the agent reads when it trips the rule,
+  # so it says what to do instead — guidance arrives exactly when it's needed.
+  ForbiddenMethodCall:
+    active: true
+    methods:
+      - value: 'java.lang.Thread.sleep'
+        reason: "Don't patch timing problems with sleeps. Fix the cause, or use structured concurrency."
+      - value: 'android.os.Handler.postDelayed'
+        reason: "Delayed callbacks hide ordering bugs. Model the state explicitly and react to it."
+      - value: 'kotlin.io.println'
+        reason: 'Use the project logger.'
+  ForbiddenImport:
+    active: true
+    imports:
+      - value: 'kotlinx.coroutines.GlobalScope'
+        reason: 'GlobalScope leaks work. Use viewModelScope or an injected scope.'
+  MaxLineLength:
+    maxLineLength: 120
+  MagicNumber:
+    active: true
+    ignorePropertyDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+    ignoreAnnotation: true
+  UnusedPrivateMember:
+    active: true
+  ForbiddenComment:
+    active: true
+    comments:
+      - value: 'TODO:'
+        reason: 'Open an issue instead of leaving a TODO.'
+      - value: 'HACK'
+        reason: 'Fix the root cause, or open an issue describing it.'
+      - value: 'workaround'
+        reason: "Workarounds become the next agent's pattern. Fix the cause or open an issue."
+
+complexity:
+  LongMethod:
+    threshold: 60
+  CyclomaticComplexMethod:
+    threshold: 12
+  LongParameterList:
+    functionThreshold: 6
+  TooManyFunctions:
+    thresholdInFiles: 20
+
+exceptions:
+  TooGenericExceptionCaught:
+    active: true
+  SwallowedException:
+    active: true

@@ -1,0 +1,40 @@
+name: Task
+description: One pickable unit of work — one branch, one PR.
+labels: ["task"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What should be true when this is done, in plain words?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Checkable statements. These become the tests.
+      placeholder: |
+        - [ ] Given …, when …, then …
+        - [ ] …
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Files likely to change
+      description: Keeps the change surgical. The worker should stay inside this list or explain why not.
+  - type: textarea
+    id: proof
+    attributes:
+      label: Expected proof
+      description: What evidence should the PR show? (test output, screenshots, state diagram…)
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Branch prefix
+      options: [feature/, bugfix/, upkeep/]
+    validations:
+      required: true

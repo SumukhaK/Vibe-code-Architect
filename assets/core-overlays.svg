@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" role="img" aria-label="One framework-free core plus stack overlays. Copier copy builds a new project from the core and the chosen overlays; copier update pulls new rules into existing projects.">
+  <style>
+    .t { font-family: "Segoe UI", "Helvetica Neue", Arial, "DejaVu Sans", sans-serif; }
+    .m { font-family: "DejaVu Sans Mono", Menlo, Consolas, monospace; }
+    .h { font-size: 26px; font-weight: 700; fill: #1d2a4a; }
+    .s { font-size: 15px; fill: #5b6478; }
+    .n { font-size: 17px; font-weight: 700; }
+    .ns { font-size: 13px; }
+    .f { font-size: 14px; fill: #1d2a4a; }
+    .e { font-size: 13px; font-weight: 600; fill: #5b6478; }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8a93a6"/>
+    </marker>
+  </defs>
+  <rect x="2" y="2" width="956" height="426" rx="28" fill="#fbf7ef" stroke="#eadfca" stroke-width="2"/>
+  <text class="t h" x="48" y="62">One core, stack overlays</text>
+  <text class="t s" x="48" y="88">The rules live once. Each project takes the core plus only the stacks it uses.</text>
+
+  <!-- core -->
+  <rect x="48" y="118" width="400" height="118" rx="18" fill="#1d2a4a"/>
+  <text class="t n" x="72" y="150" style="fill:#ffffff">core — every project</text>
+  <text class="t ns" x="72" y="176" style="fill:#d7deef">AGENTS.md · PR + issue templates · pr_guard</text>
+  <text class="t ns" x="72" y="198" style="fill:#d7deef">PRD · TECHNICAL · ADRs · corrections → rules</text>
+  <text class="t ns" x="72" y="220" style="fill:#d7deef">prompts/ · generated code map · protect main</text>
+
+  <!-- overlays -->
+  <rect x="48" y="252" width="192" height="64" rx="14" fill="#e8f0fe" stroke="#3b74ee" stroke-width="2"/>
+  <text class="t n" x="66" y="280" style="fill:#1d2a4a">python</text>
+  <text class="t ns" x="66" y="301" style="fill:#4d5669">ruff · pyright · import-linter</text>
+
+  <rect x="256" y="252" width="192" height="64" rx="14" fill="#e7f5ee" stroke="#2a9d6f" stroke-width="2"/>
+  <text class="t n" x="274" y="280" style="fill:#1d2a4a">kotlin-android</text>
+  <text class="t ns" x="274" y="301" style="fill:#4d5669">detekt · Konsist · Roborazzi</text>
+
+  <rect x="48" y="330" width="192" height="56" rx="14" fill="none" stroke="#b9b09e" stroke-width="2" stroke-dasharray="6 6"/>
+  <text class="t n" x="66" y="356" style="fill:#8a8270">rust</text>
+  <text class="t ns" x="66" y="375" style="fill:#8a8270">next: clippy · cargo-deny</text>
+
+  <rect x="256" y="330" width="192" height="56" rx="14" fill="none" stroke="#b9b09e" stroke-width="2" stroke-dasharray="6 6"/>
+  <text class="t n" x="274" y="356" style="fill:#8a8270">kmp + swiftui</text>
+  <text class="t ns" x="274" y="375" style="fill:#8a8270">when a real project needs it</text>
+
+  <!-- arrows -->
+  <path d="M470 210 H582" stroke="#8a93a6" stroke-width="2.5" marker-end="url(#a)"/>
+  <text class="m" x="474" y="198" style="font-size:13px;fill:#1d2a4a">copier copy</text>
+  <path d="M590 330 C540 330 520 330 470 330" stroke="#8a93a6" stroke-width="2.5" fill="none" stroke-dasharray="7 6" marker-start="url(#a)"/>
+  <text class="m" x="470" y="352" style="font-size:13px;fill:#1d2a4a">copier update</text>
+  <text class="t e" x="470" y="372">rules flow into</text>
+  <text class="t e" x="470" y="390">old projects too</text>
+
+  <!-- project -->
+  <rect x="592" y="118" width="320" height="268" rx="18" fill="#ffffff" stroke="#d8cdb6" stroke-width="2"/>
+  <text class="t n" x="616" y="150" style="fill:#1d2a4a">your-project/</text>
+  <text class="m f" x="616" y="182">AGENTS.md</text>
+  <text class="m f" x="616" y="206">guardrails.toml</text>
+  <text class="m f" x="616" y="230">docs/  PRD · TECHNICAL · adr</text>
+  <text class="m f" x="616" y="254">prompts/  task · review</text>
+  <text class="m f" x="616" y="278">tools/  pr_guard · codemap</text>
+  <text class="m f" x="616" y="302">.github/  workflows</text>
+  <text class="m f" x="616" y="326" style="fill:#3b74ee">src/  tests/</text>
+  <text class="m f" x="616" y="350" style="fill:#2a9d6f">config/detekt · app/</text>
+</svg>

@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Protect main so the rules hold even when a prompt is ignored:
+#   - nobody pushes to main directly; everything arrives through a PR
+#   - the guardrail checks must pass before merge
+#   - no force-pushes, no deleting main
+# Solo-owner setup: no required approvals (you can't approve your own PR);
+# the merge click itself is the owner's decision.
+#
+# Requires the GitHub CLI, logged in as the repo owner:  gh auth login
+set -euo pipefail
+
+repo="${1:-$(gh repo view --json nameWithOwner --jq .nameWithOwner)}"
+
+gh api -X PUT "repos/${repo}/branches/main/protection" --input - <<'JSON'
+{
+  "required_status_checks": {
+    "strict": true,
+    "contexts": [
+      "PR rules",
+      "Code map is current",
+      "No copy-paste"{% if 'python' in stacks %},
+      "Python checks"{% endif %}{% if 'kotlin-android' in stacks %},
+      "Android checks"{% endif %}
+    ]
+  },
+  "enforce_admins": false,
+  "required_pull_request_reviews": null,
+  "restrictions": null,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
+  "required_linear_history": false
+}
+JSON
+
+echo "main is protected on ${repo}."

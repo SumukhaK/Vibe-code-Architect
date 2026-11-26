@@ -1,0 +1,79 @@
+# AGENTS.md — rules for every agent in {{ project_name }}
+
+Read this before you touch anything. It is short on purpose: every rule that a
+script can check is already enforced in CI. What is left here needs judgement.
+
+## Who does what
+
+| Role | Who | Does | Never does |
+| --- | --- | --- | --- |
+| **Owner** | @{{ owner }} | Decides, merges, owns the rules | — |
+| **Reviewer** | Claude (or another strong model), via the owner | Reviews PRs against the issue, the rules and the proof | Writes code in the PR, merges |
+| **Worker** | OpenCode, Copilot, Codex, … | Implements one issue on one branch, opens one PR | Merges, approves, pushes to `main`, edits guardrails |
+
+## The four rules (after Andrej Karpathy)
+
+1. **Think before coding.** State your assumptions. If the issue is ambiguous,
+   ask in the PR or issue instead of guessing. If a simpler approach exists, say so.
+2. **Simplicity first.** Write the least code that meets the acceptance criteria.
+   No speculative features, single-use abstractions, unrequested options, or
+   defensive code for cases that cannot happen.
+3. **Surgical changes.** Touch only what the issue needs. Match the existing style.
+   Leave unrelated code alone, even if you would have written it differently.
+4. **Goal-driven execution.** The issue's acceptance criteria are the goal. Turn
+   them into tests first, then make the tests pass. Done means verified, not typed.
+
+## The loop
+
+1. Take **one issue**. Create **one branch** from `main`:
+   `feature/<short-title>`, `bugfix/<short-title>` or `upkeep/<short-title>`.
+2. **Write the failing test first** and commit it. Then make it pass.
+3. **Run the code yourself.** Collect proof that it works (see below).
+4. Open **one PR** using the template. Link the issue (`Closes #N`).
+5. **Stop.** Do not start another issue, do not merge, do not "tidy up" elsewhere.
+   The reviewer will answer on the PR; you will get a change request or a merge.
+
+## Proof, not just a diff
+
+A diff shows what changed, not that it works. Every PR fills in **Verification**:
+
+- **Bug fix:** the new test, and how you showed it failed before your fix.
+- **Logic / API:** the test command and its output.
+- **UI:** screenshots (screenshot tests run in CI when the stack supports them).
+- **Behaviour across states:** a small state diagram of what the user sees.
+
+Prefer evidence that CI produces for the exact commit over evidence you paste.
+
+## Code is the input for the next agent
+
+The next agent copies whatever patterns it finds here. So:
+
+- **Don't write workarounds.** If the right fix is hard, say so in the PR. Don't
+  patch around it with timers, retries, sleeps or broad `try/except`.
+- **No comments that justify a shortcut.** Comments go stale and can't be
+  enforced. If something must never happen, it belongs in a lint rule or a type.
+- **Don't copy a bad pattern because it already exists.** Flag it instead.
+
+## When you are corrected
+
+Every correction should become a check, not another line in this file.
+When the reviewer corrects a mistake that could happen again, the follow-up is:
+
+1. a lint rule, type or test that catches it (an `upkeep/` PR),
+2. clean-up of the old occurrences,
+3. a line in `docs/corrections.md` recording which rule now enforces it.
+
+## Guardrails you may not change
+
+Workflows, lint configs and `guardrails.toml` change only on `upkeep/` branches,
+in a PR whose issue asks for it. CI rejects guardrail edits on any other branch.
+
+## Where things live
+
+- `docs/PRD.md` — what we are building and why (non-technical).
+- `docs/TECHNICAL.md` + `docs/adr/` — how, and why each decision was made.
+- **GitHub Issues** — the tracker. There is no status document to update.
+- `docs/CODEMAP.md` — generated map of the code. Never edit by hand; run
+  `python tools/codemap.py`.
+- `docs/corrections.md` — every repeated mistake and the rule that now prevents it.
+- `prompts/` — the task, review and change-request prompts.

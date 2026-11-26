@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="960" height="520" role="img" aria-label="The inverse trust pyramid: most effort in code and architecture, then lint, types and tests, then verification, and the least in prose rules.">
+  <style>
+    .t { font-family: "Segoe UI", "Helvetica Neue", Arial, "DejaVu Sans", sans-serif; }
+    .h { font-size: 26px; font-weight: 700; fill: #1d2a4a; }
+    .s { font-size: 15px; fill: #5b6478; }
+    .l { font-size: 19px; font-weight: 700; fill: #ffffff; }
+    .ls { font-size: 14px; fill: #ffffff; opacity: 0.92; }
+    .r { font-size: 15px; fill: #1d2a4a; }
+    .rk { font-size: 12px; font-weight: 700; fill: #8a93a6; letter-spacing: 1.5px; }
+  </style>
+  <rect x="2" y="2" width="956" height="516" rx="28" fill="#fbf7ef" stroke="#eadfca" stroke-width="2"/>
+
+  <text class="t h" x="48" y="62">The inverse trust pyramid</text>
+  <text class="t s" x="48" y="88">Spend effort where it can't be ignored. Prose is the smallest layer, not the first.</text>
+
+  <!-- effort arrow -->
+  <path d="M44 128 V452" stroke="#c9bfab" stroke-width="3" stroke-linecap="round"/>
+  <path d="M36 440 l8 16 8 -16" fill="none" stroke="#c9bfab" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text class="t rk" x="34" y="114">MOST EFFORT</text>
+  <text class="t rk" x="58" y="456">LEAST</text>
+
+  <!-- layers: centre x = 400 -->
+  <g transform="translate(30 0)">
+  <path d="M70 120 H670 L610 200 H130 Z" fill="#1d2a4a"/>
+  <text class="t l" x="370" y="156" text-anchor="middle">Code &amp; architecture</text>
+  <text class="t ls" x="370" y="180" text-anchor="middle">make the wrong thing impossible</text>
+
+  <path d="M134 208 H606 L546 288 H194 Z" fill="#3b74ee"/>
+  <text class="t l" x="370" y="244" text-anchor="middle">Lint · types · tests</text>
+  <text class="t ls" x="370" y="268" text-anchor="middle">catch the rest, on every PR</text>
+
+  <path d="M198 296 H542 L482 376 H258 Z" fill="#2a9d6f"/>
+  <text class="t l" x="370" y="332" text-anchor="middle">Verification</text>
+  <text class="t ls" x="370" y="356" text-anchor="middle">prove it actually runs</text>
+
+  <path d="M262 384 H478 L418 456 H322 Z" fill="#f4a71d"/>
+  <text class="t l" x="370" y="416" text-anchor="middle" style="fill:#1d2a4a">Prose</text>
+  <text class="t ls" x="370" y="438" text-anchor="middle" style="fill:#1d2a4a">judgement only</text>
+
+  </g>
+  <!-- right column: where it lives -->
+  <text class="t rk" x="724" y="128">IN THIS TEMPLATE</text>
+  <text class="t r" x="724" y="156">Module boundaries,</text>
+  <text class="t r" x="724" y="178">banned APIs, clean examples</text>
+
+  <text class="t r" x="724" y="244">ruff · pyright · detekt · Konsist</text>
+  <text class="t r" x="724" y="266">pr_guard · no copy-paste</text>
+
+  <text class="t r" x="724" y="332">red → green bug proof,</text>
+  <text class="t r" x="724" y="354">screenshots, code map</text>
+
+  <text class="t r" x="724" y="416">AGENTS.md · prompts/</text>
+  <text class="t r" x="724" y="438">PRD · ADRs</text>
+
+  <path d="M690 160 H712 M626 248 H712 M562 336 H712 M498 420 H712" stroke="#e3d8c3" stroke-width="2" stroke-dasharray="3 5"/>
+  <text class="t s" x="48" y="494" style="font-size:13px">After Lauren Tan, “All Code Is Slop (Except Mine)”, AI Engineer.</text>
+</svg>

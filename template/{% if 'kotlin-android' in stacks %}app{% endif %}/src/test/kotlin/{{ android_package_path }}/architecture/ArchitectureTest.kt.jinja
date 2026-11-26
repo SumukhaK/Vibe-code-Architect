@@ -1,0 +1,36 @@
+package {{ android_package }}.architecture
+
+import com.lemonappdev.konsist.api.Konsist
+import com.lemonappdev.konsist.api.architecture.KoArchitectureCreator.assertArchitecture
+import com.lemonappdev.konsist.api.architecture.Layer
+import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
+import com.lemonappdev.konsist.api.verify.assertTrue
+import org.junit.Test
+
+/**
+ * Architecture rules as tests: a boundary that only exists in a document gets
+ * crossed. Add a test here whenever a review correction is about structure.
+ */
+class ArchitectureTest {
+
+    @Test
+    fun `domain depends on nothing, data and ui depend only on domain`() {
+        Konsist.scopeFromProduction().assertArchitecture {
+            val domain = Layer("Domain", "{{ android_package }}.domain..")
+            val data = Layer("Data", "{{ android_package }}.data..")
+            val ui = Layer("UI", "{{ android_package }}.ui..")
+
+            domain.dependsOnNothing()
+            data.dependsOn(domain)
+            ui.dependsOn(domain)
+        }
+    }
+
+    @Test
+    fun `view models live in the ui package`() {
+        Konsist.scopeFromProduction()
+            .classes()
+            .withNameEndingWith("ViewModel")
+            .assertTrue { it.resideInPackage("{{ android_package }}.ui..") }
+    }
+}
