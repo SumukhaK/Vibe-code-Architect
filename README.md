@@ -109,7 +109,7 @@ control. Everything it relies on is the template's contract: the PR template, th
 forms, the prompts and the fixed verdict format. Any repo generated from this template works
 with it.
 
-> **Status:** in development, and private for now (the link works once it's public).
+> **Status:** in development (pre-alpha); worker execution is still switched off.
 > I re-scoped it after building too much of it the hard way. That lesson is a big part of
 > why this template exists.
 
