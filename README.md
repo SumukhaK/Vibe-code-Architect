@@ -92,9 +92,10 @@ GitKeeper comes in. The template works fine without it.
 
 This template and [GitKeeper](https://github.com/SumukhaK/GitKeeper) come from the same
 idea. The template sets the **rules**. GitKeeper, a small Windows desktop companion (a fox
-that lives on your screen), runs the **relay** so the owner only reads and decides:
+that lives on your screen), is being built to run the **relay** so the owner only reads and
+decides. This is the plan from its [PRD](https://github.com/SumukhaK/GitKeeper/blob/main/docs/PRD.md):
 
-| Loop step | What GitKeeper does | What stays human |
+| Loop step | What GitKeeper will do | What stays human |
 | --- | --- | --- |
 | PR raised, CI green | Notices it and tells you a review is waiting | — |
 | Review | One click copies the review packet (issue, diff, CI, proof, `prompts/review.md`) | You paste it to the reviewer and judge the answer |
@@ -104,12 +105,13 @@ that lives on your screen), runs the **relay** so the owner only reads and decid
 | Approved | Shows "ready to merge" | **You click Merge** |
 | After merge | Shows the next open issue with its task prompt, then sleeps | — |
 
-It never calls a model by itself and never merges, so the reviewer's usage stays under your
+It will never call a model by itself or merge, so the reviewer's usage stays under your
 control. Everything it relies on is the template's contract: the PR template, the issue
 forms, the prompts and the fixed verdict format. Any repo generated from this template works
 with it.
 
-> **Status:** in development (pre-alpha); worker execution is still switched off.
+> **Status:** in development (pre-alpha). The relay above is designed, not shipped yet;
+> worker execution is still switched off.
 > I re-scoped it after building too much of it the hard way. That lesson is a big part of
 > why this template exists.
 
