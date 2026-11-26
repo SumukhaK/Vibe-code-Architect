@@ -85,8 +85,35 @@ check is a script. `AGENTS.md` stays short because it only holds what needs judg
 | **Worker** | Any coding agent | One issue → one branch → tests first → one PR with proof → **stop** | Merges, pushes to `main`, edits guardrails |
 
 Steps 4 → 5 → 6 → 2 are pure relay: copying the review packet to the reviewer and the
-change request back to the worker. That's the part worth automating; I'm building a
-desktop companion, GitKeeper, for exactly that. The template works without it.
+change request back to the worker. That's the part worth automating, which is where
+GitKeeper comes in. The template works fine without it.
+
+## The companion: GitKeeper
+
+This template and [GitKeeper](https://github.com/SumukhaK/GitKeeper) come from the same
+idea. The template sets the **rules**. GitKeeper, a small Windows desktop companion (a fox
+that lives on your screen), is being built to run the **relay** so the owner only reads and
+decides. This is the plan from its [PRD](https://github.com/SumukhaK/GitKeeper/blob/main/docs/PRD.md):
+
+| Loop step | What GitKeeper will do | What stays human |
+| --- | --- | --- |
+| PR raised, CI green | Notices it and tells you a review is waiting | — |
+| Review | One click copies the review packet (issue, diff, CI, proof, `prompts/review.md`) | You paste it to the reviewer and judge the answer |
+| Verdict | Reads the `VERDICT:` line you paste back; posts the review on the PR | — |
+| Changes requested | Prepares `prompts/changes.md` for the worker, same branch; stops after 3 rounds | — |
+| CI red | Hands the failure to the worker to fix, max 3 tries | — |
+| Approved | Shows "ready to merge" | **You click Merge** |
+| After merge | Shows the next open issue with its task prompt, then sleeps | — |
+
+It will never call a model by itself or merge, so the reviewer's usage stays under your
+control. Everything it relies on is the template's contract: the PR template, the issue
+forms, the prompts and the fixed verdict format. Any repo generated from this template works
+with it.
+
+> **Status:** in development (pre-alpha). The relay above is designed, not shipped yet;
+> worker execution is still switched off.
+> I re-scoped it after building too much of it the hard way. That lesson is a big part of
+> why this template exists.
 
 ## What you get
 
